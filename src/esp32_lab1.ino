@@ -9,14 +9,13 @@
 // light sensor - D33
 
 
-int Green=4;
-int Yellow =23;
-int Blue =22;
-int RED=15;
-int btn=14;
-int LIGHT =33;
+#define RED     15
+#define GREEN   4
+#define BLUE    22
+#define YELLOW  23
+#define BUTTON  14
+#define LIGHT   33
 #include <esp32-hal-gpio.h>
-int state = LOW;
 //TASK1
 
 #include "Arduino.h"
@@ -35,27 +34,28 @@ void loop() {
 
 //TASK2
 /*void setup(void) {
-    pinMode(Green, OUTPUT);
+    pinMode(GREEN, OUTPUT);
 }
 
 
 void loop(void) {
-    int btnValue=digitalRead(btn);
-    if (btnValue==HIGH)
-    {
+    static int state=LOW;
+    static int prevBtn=LOW;
+    int btnValue=digitalRead(BUTTON);
+    
+    if (btnValue==HIGH && prevBtn==LOW){
         state=!state;
-        digitalWrite(Green,state);
+        digitalWrite(GREEN,state);
         delay(500);
-        Serial.println("Green==1");
+          if (state == HIGH) {
+            Serial.println("Green==1");
+          } 
+          else {
+            Serial.println("Green==0");
+          }
+          delay(200);
     }
-    if (state == HIGH) {
-      Serial.println("Green ON");
-    } else {
-      Serial.println("Green OFF");
-    }
-
-    delay(2000);
-}*/
+}*/ 
 
 
 
@@ -67,8 +67,9 @@ void loop(void) {
 
 void loop() {
   int raw = analogRead(LIGHT); 
-  Serial.println(raw);       
-  delay(500); 
+  Serial.print("raw="); 
+  Serial.print(raw);       
+  delay(400); 
 }*/
 
 /****************************************************/
@@ -80,67 +81,76 @@ void loop() {
 /*void setup() {
   Serial.begin(115200);
   pinMode(LIGHT, INPUT);
-  pinMode(Blue, OUTPUT);
-  pinMode(Green, OUTPUT);
-  pinMode(Yellow, OUTPUT);
+  pinMode(BLUE, OUTPUT);
+  pinMode(GREEN, OUTPUT);
+  pinMode(YELLOW, OUTPUT);
   pinMode(RED, OUTPUT);
 }
 
 void loop() {
   int value=analogRead(LIGHT); 
-  digitalWrite(Blue,LOW);
-  digitalWrite(Green,LOW);
-  digitalWrite(Yellow,LOW);
+  digitalWrite(BLUE,LOW);
+  digitalWrite(GREEN,LOW);
+  digitalWrite(YELLOW,LOW);
   digitalWrite(RED,LOW);
   if(value<1024){
-    digitalWrite(Blue,HIGH);
+    digitalWrite(BLUE,HIGH);
   } else if(value<2048) {
-    digitalWrite(Green,HIGH);
+    digitalWrite(GREEN,HIGH);
   } else if (value<3072) {
-    digitalWrite(Yellow,HIGH);
+    digitalWrite(YELLOW,HIGH);
   } else{
     digitalWrite(RED, HIGH);
   }
-  Serial.print(value);
+  Serial.print("band=");
+  Serial.println(value);
 
-  delay(5000);
+  delay(50);
 }*/
 
 
 
 //TASK5
 // /****************************************************/
-/*
-void setup() {
+
+/*void setup() {
   Serial.begin(115200);
   pinMode(LIGHT, INPUT);
-  pinMode(Yellow, OUTPUT);
-  pinMode(btn, INPUT);
+  pinMode(YELLOW, OUTPUT);
+  pinMode(BUTTON, INPUT);
 }
 
 void loop() {
-  int button = digitalRead(btn);
+  int button = digitalRead(BUTTON);
 
   if (button == LOW) {
     int value = analogRead(LIGHT);
     Serial.print("snapshot=");
     Serial.println(value);
-    digitalWrite(Yellow, HIGH);
+    digitalWrite(YELLOW, HIGH);
     delay(100);
-    digitalWrite(Yellow, LOW);
+    digitalWrite(YELLOW, LOW);
     delay(300); 
   }
-}
-*/
+}*/
+
 
 // TASK6
 // /****************************************************/
 void setup(void) {
-    
+    pinMode(BLUE, OUTPUT);
+    Serial.begin(115200);
 }
 
 void loop(void) {
-
+   if (Serial.available()) {
+    char c = Serial.read();
+    if (c == 'B') {
+      digitalWrite(BLUE, HIGH);
+    } else if (c == 'b') {
+      digitalWrite(BLUE, LOW);
+    }
+  }
 }
 
 
