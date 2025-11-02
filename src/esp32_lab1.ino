@@ -22,11 +22,14 @@
 /*
 void setup() {
   pinMode(RED, OUTPUT);
+  Serial.begin(115200);
 }
 void loop() {
   digitalWrite(RED, HIGH);
+  Serial.println("RED ON");
   delay(500);
   digitalWrite(RED, LOW);
+  Serial.println("RED OFF");
   delay(500);
 }
 */
@@ -35,6 +38,8 @@ void loop() {
 //TASK2
 /*void setup(void) {
     pinMode(GREEN, OUTPUT);
+    pinMode(BUTTON, INPUT);
+    Serial.begin(115200);
 }
 
 
@@ -46,15 +51,15 @@ void loop(void) {
     if (btnValue==HIGH && prevBtn==LOW){
         state=!state;
         digitalWrite(GREEN,state);
-        delay(500);
           if (state == HIGH) {
-            Serial.println("Green==1");
+            Serial.println("GREEN=1");
           } 
           else {
-            Serial.println("Green==0");
+            Serial.println("GREEN=0");
           }
           delay(200);
     }
+    prevBtn=btnValue;
 }*/ 
 
 
@@ -68,8 +73,8 @@ void loop(void) {
 void loop() {
   int raw = analogRead(LIGHT); 
   Serial.print("raw="); 
-  Serial.print(raw);       
-  delay(400); 
+  Serial.println(raw);       
+  delay(500); 
 }*/
 
 /****************************************************/
@@ -95,15 +100,17 @@ void loop() {
   digitalWrite(RED,LOW);
   if(value<1024){
     digitalWrite(BLUE,HIGH);
+    Serial.println("band=BLUE");
   } else if(value<2048) {
     digitalWrite(GREEN,HIGH);
+    Serial.println("band=GREEN");
   } else if (value<3072) {
     digitalWrite(YELLOW,HIGH);
+    Serial.println("band=YELLOW");
   } else{
     digitalWrite(RED, HIGH);
+    Serial.println("band=RED");
   }
-  Serial.print("band=");
-  Serial.println(value);
 
   delay(50);
 }*/
@@ -121,17 +128,18 @@ void loop() {
 }
 
 void loop() {
+  static int prevButton = HIGH;
   int button = digitalRead(BUTTON);
 
-  if (button == LOW) {
+  if (button == HIGH && prevButton == LOW) {
     int value = analogRead(LIGHT);
     Serial.print("snapshot=");
     Serial.println(value);
     digitalWrite(YELLOW, HIGH);
     delay(100);
     digitalWrite(YELLOW, LOW);
-    delay(300); 
   }
+  prevButton = button;
 }*/
 
 
@@ -147,8 +155,10 @@ void loop(void) {
     char c = Serial.read();
     if (c == 'B') {
       digitalWrite(BLUE, HIGH);
+      Serial.println("BLUE=1");
     } else if (c == 'b') {
       digitalWrite(BLUE, LOW);
+      Serial.println("BLUE=0");
     }
   }
 }
